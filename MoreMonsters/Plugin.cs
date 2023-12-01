@@ -40,7 +40,7 @@ namespace MoreMonsters
         public static bool secondTier = false;
         public static bool thirdTier = false;
 
-        public static float timeToSpawn = 120f;
+        public static float timeToSpawn = 120f; // slightly after spawntime
         public static int ventIndex = 0;
 
         internal static GuiMenu myGUI;
@@ -53,6 +53,10 @@ namespace MoreMonsters
                 Instance = this;
             }
             */
+
+            // Major credit to @lawrencea13 for his Lethal Company Game Master code. Made understanding
+            // how gui works much easier.
+
             Instance = this;
 
             mls = BepInEx.Logging.Logger.CreateLogSource(modGUID);
