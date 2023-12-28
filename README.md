@@ -16,6 +16,13 @@ Although this may only affect the host's performance).
 The Time Between Mob Spawns slider adjusts the amount of time between each new individual monster spawn, From 0 to a max of 8 hours. 0 results in instantaneous spawning of the selected number of monsters.
 When "Spawn an extra mob after..." is toggled, it will spawn a new monster after finding 25%, 50%, and 75% of the total scrap contained in the level, for a total of 3 additional monsters. Is is toggled off by default.
 
+# Changelog
+
+# V 1.2.1
+- Fixed bug where one fewer monster would spawn than desired, i.e. 9 monsters spawn when 10 was the setting.
+# V 1.2.0
+- Can now customize quantity of each type of monster, including monsters that don't normally spawn on the moon of choice.
+
 # Future Updates
 Modifying the number of outside and daytime monsters as well.
 Add more customization with regards to having more mobs spawn at various checkpoints, like with collecting
