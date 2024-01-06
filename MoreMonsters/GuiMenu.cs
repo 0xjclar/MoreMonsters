@@ -3,9 +3,11 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 using UnityEngine;
 using UnityEngine.Windows;
 
@@ -35,6 +37,21 @@ namespace MoreMonsters.GuiMenuComponent
         public int guiNMobs;
         public float guiTimeBetweenMobSpawns;
         public bool guiEnableSpawnMobsAsScrapIsFound;
+        public int guiMaxCentipedes;
+        public int guiMaxSandSpiders;
+        //public string guiMaxSandSpidersString;
+        public int guiMaxHoarderBugs;
+        public int guiMaxFlowerMen;
+        public int guiMaxCrawlers;
+        public int guiMaxBlobs;
+        public int guiMaxSpringMen;
+        public int guiMaxPuffers;
+        public int guiMaxNutcrackers;
+        public int guiMaxDressGirls;
+        public int guiMaxJesters;
+        public int guiMaxMaskedPlayerEnemies;
+        public int guiMaxLassoMen;
+
         //public bool guiScaleMonsterCountByPlayerCount;
 
         private GUIStyle menuStyle;
@@ -148,42 +165,91 @@ namespace MoreMonsters.GuiMenuComponent
 
         public void OnGUI()
         {
-            // oddly enough doesn't work here
-            if (!guiIsHost) { return; }
-            if (menuStyle == null) { initMenu(); }
+            
+            if (!guiIsHost) 
+            { 
+                return; 
+            }
+            if (menuStyle == null) 
+            { 
+                initMenu(); 
+            }
 
             if (b_menu)
             {
                 
-                //GUI.Box(new Rect(MENUX, MENUY, MENUWIDTH, MENUHEIGHT), "MoreMonsters Menu", menuStyle);
+                
 
                 tabIndex = GUI.Toolbar(new Rect(MENUX, MENUY - 30, MENUWIDTH, 30), tabIndex, tabNames, buttonStyle);
 
                 switch (tabIndex)
                 {
                     case 0:
-                        // direct vs coefficient mob scaling
-                        // allow user to set nMobs directly or
                         
-                        // if use playerScaling is toggled, then use a custom coefficient with a default of .6 * nPlayers to increase mob count
-                        // maybe if use playerScaling is enabled, then guiNMobs is set to coefficient * nPlayers
-                        // else it's set directly
 
-                        GUI.Label(new Rect(CENTERX, MENUY, ITEMWIDTH, 30), "Number of Mobs", labelStyle);
-                        GUI.Label(new Rect(CENTERX, MENUY + 30, ITEMWIDTH, 30), ""+guiNMobs, textStyle);
-                        guiNMobs = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 60, ITEMWIDTH, 30), (int)guiNMobs, (int)1, (int)100);
-                        //MoreMonstersBase.mls.LogInfo("[+] guiNMobs: " + guiNMobs);
+                        GUI.Label(new Rect(CENTERX, MENUY, ITEMWIDTH, 30), "Max Number of Centipedes: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY, ITEMWIDTH, 30), "" + guiMaxCentipedes, textStyle);
+                        guiMaxCentipedes = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 30, ITEMWIDTH, 30), (int)guiMaxCentipedes, (int)0, (int)50);
 
-                        // should maybe move the order of these around to be optimal. have the var assigned before the menu shows. Although it doesn't
-                        // matter since a default value is set anyways
+                        GUI.Label(new Rect(CENTERX, MENUY + 60, ITEMWIDTH, 30), "Max Number of SandSpiders: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 60, ITEMWIDTH, 30), "" + guiMaxSandSpiders, textStyle);
+                        guiMaxSandSpiders = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 90, ITEMWIDTH, 30), (int)guiMaxSandSpiders, (int)0, (int)50);
 
-                        GUI.Label(new Rect(CENTERX, MENUY + 90, ITEMWIDTH, 40), "Time between Mob Spawns", labelStyle);
-                        GUI.Label(new Rect(CENTERX, MENUY + 130, ITEMWIDTH, 30), "" + (guiTimeBetweenMobSpawns / 100f) + " hours in-game", textStyle);
-                        guiTimeBetweenMobSpawns = GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 160, ITEMWIDTH, 30), (int)guiTimeBetweenMobSpawns, (int)0, (int)800);
-                        //MoreMonstersBase.mls.LogInfo("[+] guiTimeBetweenMobSpawns: " + guiTimeBetweenMobSpawns);
-                        guiEnableSpawnMobsAsScrapIsFound = GUI.Toggle(new Rect(CENTERX, MENUY + 190, ITEMWIDTH, 45), guiEnableSpawnMobsAsScrapIsFound, "Spawn an extra mob after finding 25%, 50%, and 75% of total scrap.", toggleStyle);
+                        GUI.Label(new Rect(CENTERX, MENUY + 120, ITEMWIDTH, 30), "Max Number of HoarderBugs: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 120, ITEMWIDTH, 30), "" + guiMaxHoarderBugs, textStyle);
+                        guiMaxHoarderBugs = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 150, ITEMWIDTH, 30), (int)guiMaxHoarderBugs, (int)0, (int)50);
 
-                        //guiScaleMonsterCountByPlayerCount = GUI.Toggle(new Rect(CENTERX, MENUY + 220, ITEMWIDTH, 30), guiEnableSpawnMobsAsScrapIsFound, "Enable mob scaling based on player number", toggleStyle);
+                        GUI.Label(new Rect(CENTERX, MENUY + 180, ITEMWIDTH, 30), "Max Number of Flowermen: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 180, ITEMWIDTH, 30), "" + guiMaxFlowerMen, textStyle);
+                        guiMaxFlowerMen = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 210, ITEMWIDTH, 30), (int)guiMaxFlowerMen, (int)0, (int)50);
+
+                        GUI.Label(new Rect(CENTERX, MENUY + 240, ITEMWIDTH, 30), "Max Number of Crawlers: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 240, ITEMWIDTH, 30), "" + guiMaxCrawlers, textStyle);
+                        guiMaxCrawlers = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 270, ITEMWIDTH, 30), (int)guiMaxCrawlers, (int)0, (int)50);
+
+                        GUI.Label(new Rect(CENTERX, MENUY + 300, ITEMWIDTH, 30), "Max Number of Blobs: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 300, ITEMWIDTH, 30), "" + guiMaxBlobs, textStyle);
+                        guiMaxBlobs = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 330, ITEMWIDTH, 30), (int)guiMaxBlobs, (int)0, (int)50);
+
+                        GUI.Label(new Rect(CENTERX, MENUY + 360, ITEMWIDTH, 30), "Max Number of DressGirls: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 360, ITEMWIDTH, 30), "" + guiMaxDressGirls, textStyle);
+                        guiMaxDressGirls = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 390, ITEMWIDTH, 30), (int)guiMaxDressGirls, (int)0, (int)50);
+
+                        GUI.Label(new Rect(CENTERX, MENUY + 420, ITEMWIDTH, 30), "Max Number of Puffers: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 420, ITEMWIDTH, 30), "" + guiMaxPuffers, textStyle);
+                        guiMaxPuffers = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 450, ITEMWIDTH, 30), (int)guiMaxPuffers, (int)0, (int)50);
+
+                        GUI.Label(new Rect(CENTERX, MENUY + 480, ITEMWIDTH, 30), "Max Number of SpringMen: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 480, ITEMWIDTH, 30), "" + guiMaxSpringMen, textStyle);
+                        guiMaxSpringMen = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 510, ITEMWIDTH, 30), (int)guiMaxSpringMen, (int)0, (int)50);
+
+                        GUI.Label(new Rect(CENTERX, MENUY + 540, ITEMWIDTH, 30), "Max Number of Nutcrackers: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 540, ITEMWIDTH, 30), "" + guiMaxNutcrackers, textStyle);
+                        guiMaxNutcrackers = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 570, ITEMWIDTH, 30), (int)guiMaxNutcrackers, (int)0, (int)50);
+
+                        GUI.Label(new Rect(CENTERX, MENUY + 600, ITEMWIDTH, 30), "Max Number of Jesters: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 600, ITEMWIDTH, 30), "" + guiMaxJesters, textStyle);
+                        guiMaxJesters = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 630, ITEMWIDTH, 30), (int)guiMaxJesters, (int)0, (int)50);
+
+                        GUI.Label(new Rect(CENTERX, MENUY + 660, ITEMWIDTH, 45), "Max Number of MaskedPlayerEnemies: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 660, ITEMWIDTH, 45), "" + guiMaxMaskedPlayerEnemies, textStyle);
+                        guiMaxMaskedPlayerEnemies = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 700, ITEMWIDTH, 30), (int)guiMaxMaskedPlayerEnemies, (int)0, (int)50);
+
+                        GUI.Label(new Rect(CENTERX, MENUY + 720, ITEMWIDTH, 30), "Max Number of LassoMen: ", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 165, MENUY + 720, ITEMWIDTH, 30), "" + guiMaxLassoMen, textStyle);
+                        guiMaxLassoMen = (int)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 750, ITEMWIDTH, 30), (int)guiMaxLassoMen, (int)0, (int)50);
+
+
+                        // maybe use later guiMaxSandSpiders = Int32.Parse(GUI.TextField(new Rect(CENTERX, MENUY + 90, ITEMWIDTH, 30), guiMaxSandSpiders + ""));
+                        
+
+                        GUI.Label(new Rect(CENTERX, MENUY + 780, ITEMWIDTH, 40), "Time Between Mob Spawns", labelStyle);
+                        GUI.Label(new Rect(CENTERX + 240, MENUY + 780, ITEMWIDTH, 40), "" + (guiTimeBetweenMobSpawns / 100f) + " hours in-game", textStyle);
+                        guiTimeBetweenMobSpawns = (float)GUI.HorizontalSlider(new Rect(CENTERX, MENUY + 820, ITEMWIDTH, 30), (int)guiTimeBetweenMobSpawns, (int)0, (int)800);
+                        
+                        guiEnableSpawnMobsAsScrapIsFound = GUI.Toggle(new Rect(CENTERX, MENUY + 850, ITEMWIDTH, 45), guiEnableSpawnMobsAsScrapIsFound, "Spawn an extra mob after finding 25%, 50%, and 75% of total scrap.", toggleStyle);
+
+                        
                         
 
                         break;
